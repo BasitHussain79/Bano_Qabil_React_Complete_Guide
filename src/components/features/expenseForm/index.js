@@ -1,25 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 
-const ExpenseForm = () => {
-  const [expenseTitle, setExpenseTitle] = useState("");
-  const [expenseDate, setExpenseDate] = useState("");
+const ExpenseForm = ({
+  expenseData: addExpenseData,
+  editValuesData,
+  editExpenseData,
+}) => {
+  // const [expenseTitle, setExpenseTitle] = useState("");
+  // const [expenseDate, setExpenseDate] = useState("");
+  // const [expensePrice, setExpensePrice] = useState("");
 
-  const titleChangeHandler = (e) => {
-    setExpenseTitle(e.target.value);
+  const [expenseData, setExpenseData] = useState({
+    title: "",
+    price: "",
+    date: "",
+  });
+
+  useEffect(() => {
+    if (editValuesData !== null) {
+      const dateString = editValuesData.date.toLocaleDateString().split("/");
+      const formatDate = `${dateString[2]}-${
+        dateString[0].length !== 2 ? "0" + dateString[0] : dateString[0]
+      }-${dateString[1].length !== 2 ? "0" + dateString[1] : dateString[1]}`;
+      console.log(formatDate, "formatDate");
+      setExpenseData({
+        title: editValuesData.title,
+        price: editValuesData.price,
+        date: formatDate,
+      });
+    }
+  }, [editValuesData]);
+
+  const inputChangeHandler = (e) => {
+    setExpenseData({ ...expenseData, [e.target.name]: e.target.value });
   };
 
-  const dateChangeHandler = (e) => {
-    setExpenseDate(e.target.value);
-  };
+  // const titleChangeHandler = (e) => {
+  //   setExpenseData({ ...expenseData, title: e.target.value });
+  // };
+
+  // const dateChangeHandler = (e) => {
+  //   setExpenseData({ ...expenseData, date: e.target.value });
+  // };
+
+  // const priceChangeHandler = (e) => {
+  //   setExpenseData({ ...expenseData, price: e.target.value });
+  // };
 
   const submitHandler = (e) => {
     e.preventDefault();
     const data = {
-      title: expenseTitle,
-      date: expenseDate,
+      id:
+        editValuesData !== null
+          ? editValuesData.id
+          : Math.floor(Math.random() * 1000),
+      title: expenseData.title,
+      price: expenseData.price,
+      date: new Date(expenseData.date),
     };
-    console.log("data", data);
+
+    editValuesData !== null ? editExpenseData(data) : addExpenseData(data);
+
+    setExpenseData({
+      title: "",
+      price: "",
+      date: "",
+    });
   };
 
   return (
@@ -33,8 +79,20 @@ const ExpenseForm = () => {
             name='expenseTitle'
             id='expenseTitle'
             placeholder='Add expense'
-            value={expenseTitle}
-            onChange={titleChangeHandler}
+            name='title'
+            value={expenseData.title}
+            onChange={inputChangeHandler}
+          />
+        </div>
+
+        <div>
+          <label htmlFor='price'>Price</label>
+          <input
+            type='number'
+            id='price'
+            name='price'
+            value={expenseData.price}
+            onChange={inputChangeHandler}
           />
         </div>
 
@@ -44,8 +102,9 @@ const ExpenseForm = () => {
             type='date'
             name='expenseDate'
             id='expenseDate'
-            value={expenseDate}
-            onChange={dateChangeHandler}
+            name='date'
+            value={expenseData.date}
+            onChange={inputChangeHandler}
           />
         </div>
 

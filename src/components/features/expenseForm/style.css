@@ -31,6 +31,7 @@
 .expense-form form .btn {
   grid-column: 2 / span 1;
   justify-self: end;
+  align-self: flex-end;
   cursor: pointer;
   transition: all 0.25s ease-in;
 }
