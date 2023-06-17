@@ -1,25 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 
-const ExpenseForm = () => {
-  const [expenseTitle, setExpenseTitle] = useState("");
-  const [expenseDate, setExpenseDate] = useState("");
+const ExpenseForm = ({ getExpenseData, editValues }) => {
+  // const [expenseTitle, setExpenseTitle] = useState("");
+  // const [expenseDate, setExpenseDate] = useState("");
+  // const [expensePrice, setExpensePrice] = useState("");
 
-  const titleChangeHandler = (e) => {
-    setExpenseTitle(e.target.value);
+  const [expenseData, setExpenseData] = useState({
+    title: "",
+    price: "",
+    date: "",
+  });
+
+  useEffect(() => {
+    console.log("useEffect run");
+    if (editValues != null) {
+      setExpenseData({
+        title: editValues.title,
+        price: editValues.price,
+        date: editValues.date,
+      });
+    }
+  }, [editValues]);
+
+  const inputChangeHandler = (e) => {
+    setExpenseData({ ...expenseData, [e.target.name]: e.target.value });
   };
 
-  const dateChangeHandler = (e) => {
-    setExpenseDate(e.target.value);
-  };
+  // const titleChangeHandler = (e) => {
+  //   setExpenseTitle(e.target.value);
+  // };
+
+  // const dateChangeHandler = (e) => {
+  //   setExpenseDate(e.target.value);
+  // };
+
+  // const priceChangeHandler = (e) => {
+  //   setExpensePrice(e.target.value);
+  // };
 
   const submitHandler = (e) => {
     e.preventDefault();
     const data = {
-      title: expenseTitle,
-      date: expenseDate,
+      id: Math.floor(Math.random() * 1000),
+      title: expenseData.title,
+      date: new Date(expenseData.date),
+      price: expenseData.price,
     };
-    console.log("data", data);
+
+    getExpenseData(data);
+
+    setExpenseData({
+      title: "",
+      price: "",
+      date: "",
+    });
   };
 
   return (
@@ -33,8 +68,20 @@ const ExpenseForm = () => {
             name='expenseTitle'
             id='expenseTitle'
             placeholder='Add expense'
-            value={expenseTitle}
-            onChange={titleChangeHandler}
+            name='title'
+            value={expenseData.title}
+            onChange={inputChangeHandler}
+          />
+        </div>
+
+        <div>
+          <label htmlFor='expensePrice'>Price</label>
+          <input
+            type='number'
+            placeholder='99'
+            name='price'
+            value={expenseData.price}
+            onChange={inputChangeHandler}
           />
         </div>
 
@@ -44,8 +91,9 @@ const ExpenseForm = () => {
             type='date'
             name='expenseDate'
             id='expenseDate'
-            value={expenseDate}
-            onChange={dateChangeHandler}
+            name='date'
+            value={expenseData.date}
+            onChange={inputChangeHandler}
           />
         </div>
 
