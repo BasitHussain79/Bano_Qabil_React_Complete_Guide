@@ -82,6 +82,7 @@ const ExpenseForm = ({
             name='title'
             value={expenseData.title}
             onChange={inputChangeHandler}
+            required
           />
         </div>
 
@@ -93,6 +94,7 @@ const ExpenseForm = ({
             name='price'
             value={expenseData.price}
             onChange={inputChangeHandler}
+            required
           />
         </div>
 
@@ -105,11 +107,12 @@ const ExpenseForm = ({
             name='date'
             value={expenseData.date}
             onChange={inputChangeHandler}
+            required
           />
         </div>
 
         <button className='btn' type='submit'>
-          Add Expense
+          {editValuesData !== null ? "Edit" : "Add"} Expense
         </button>
       </form>
     </div>

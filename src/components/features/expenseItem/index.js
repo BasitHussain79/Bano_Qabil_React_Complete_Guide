@@ -8,7 +8,11 @@ const ExpenseItem = (props) => {
   const year = date[2];
 
   const editHandler = () => {
-    props.getId(props.id);
+    props.editById(props.id);
+  };
+
+  const deleteHandler = () => {
+    props.deleteById(props.id);
   };
 
   return (
@@ -25,7 +29,9 @@ const ExpenseItem = (props) => {
         <button className='btn edit-btn' onClick={editHandler}>
           Edit
         </button>
-        <button className='btn delete-btn'>Delete</button>
+        <button className='btn delete-btn' onClick={deleteHandler}>
+          Delete
+        </button>
       </div>
     </li>
   );
