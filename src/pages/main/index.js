@@ -28,9 +28,28 @@ const expenseList = [
 const Home = () => {
   const [expenseListArr, setExpenseListArr] = useState(expenseList);
   const [editExpenseValues, setEditExpenseValues] = useState(null);
-  const getExpenseDataHandler = (data) => {
-    console.log("hello", data);
+  const [filterByYearData, setFilterByYearData] = useState(expenseListArr);
+
+  const addExpenseDataHandler = (data) => {
+    console.log("add expense", data);
     setExpenseListArr([data, ...expenseListArr]);
+  };
+
+  const editExpenseDataHandler = (data) => {
+    console.log("edit expense", data);
+    const editValues = expenseListArr.map((d) => {
+      if (d.id === data.id) {
+        return {
+          id: data.id,
+          title: data.title,
+          price: data.price,
+          date: data.date,
+        };
+      }
+      return d;
+    });
+    setExpenseListArr(editValues);
+    setEditExpenseValues(null);
   };
 
   const editHandlerById = (id) => {
@@ -38,14 +57,32 @@ const Home = () => {
     setEditExpenseValues(filteredArr[0]);
   };
 
+  const deleteByIdHandler = (id) => {
+    console.log(id, "delete");
+    const filterData = expenseListArr.filter((data) => data.id !== id);
+    setExpenseListArr(filterData);
+  };
+
+  const filterByYearHandler = (year) => {
+    const filterByYear = expenseListArr.filter(
+      (data) => data.date.getFullYear().toString() === year.toString()
+    );
+    setFilterByYearData(filterByYear);
+  };
+
   return (
     <Main>
       <ExpenseForm
-        getExpenseData={getExpenseDataHandler}
+        addExpense={addExpenseDataHandler}
+        editExpense={editExpenseDataHandler}
         editValues={editExpenseValues}
       />
-      <ExpenseFilter />
-      <ExpenseList expenses={expenseListArr} editById={editHandlerById} />
+      <ExpenseFilter filterByYear={filterByYearHandler} />
+      <ExpenseList
+        expenses={filterByYearData}
+        editById={editHandlerById}
+        deleteById={deleteByIdHandler}
+      />
     </Main>
   );
 };

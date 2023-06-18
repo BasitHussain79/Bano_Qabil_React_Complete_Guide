@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 
-const ExpenseForm = ({ getExpenseData, editValues }) => {
+const ExpenseForm = ({ addExpense, editExpense, editValues }) => {
   // const [expenseTitle, setExpenseTitle] = useState("");
   // const [expenseDate, setExpenseDate] = useState("");
   // const [expensePrice, setExpensePrice] = useState("");
@@ -13,14 +13,21 @@ const ExpenseForm = ({ getExpenseData, editValues }) => {
   });
 
   useEffect(() => {
-    console.log("useEffect run");
-    if (editValues != null) {
+    if (editValues !== null) {
+      const date = editValues.date.toLocaleDateString().split("/");
+      const formatDate = `${date[2]}-${
+        date[0].length !== 2 ? "0" + date[0] : date[0]
+      }-${date[1].length !== 2 ? "0" + date[1] : date[1]}`;
       setExpenseData({
         title: editValues.title,
         price: editValues.price,
-        date: editValues.date,
+        date: formatDate,
       });
     }
+
+    // return () => {
+    //   console.log("empty data effect");
+    // };
   }, [editValues]);
 
   const inputChangeHandler = (e) => {
@@ -42,13 +49,14 @@ const ExpenseForm = ({ getExpenseData, editValues }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     const data = {
-      id: Math.floor(Math.random() * 1000),
+      id:
+        editValues !== null ? editValues.id : Math.floor(Math.random() * 1000),
       title: expenseData.title,
       date: new Date(expenseData.date),
       price: expenseData.price,
     };
 
-    getExpenseData(data);
+    editValues !== null ? editExpense(data) : addExpense(data);
 
     setExpenseData({
       title: "",
@@ -71,6 +79,7 @@ const ExpenseForm = ({ getExpenseData, editValues }) => {
             name='title'
             value={expenseData.title}
             onChange={inputChangeHandler}
+            required
           />
         </div>
 
@@ -82,6 +91,7 @@ const ExpenseForm = ({ getExpenseData, editValues }) => {
             name='price'
             value={expenseData.price}
             onChange={inputChangeHandler}
+            required
           />
         </div>
 
@@ -94,11 +104,12 @@ const ExpenseForm = ({ getExpenseData, editValues }) => {
             name='date'
             value={expenseData.date}
             onChange={inputChangeHandler}
+            required
           />
         </div>
 
         <button className='btn' type='submit'>
-          Add Expense
+          {editValues !== null ? "Edit" : "Add"} Expense
         </button>
       </form>
     </div>
