@@ -1,22 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./style.css";
 
-const ExpenseForm = ({ addExpense, editValues }) => {
+const ExpenseForm = ({ getData }) => {
   const [expenseData, setExpenseData] = useState({
     title: "",
     price: "",
     date: "",
   });
-
-  useEffect(() => {
-    if (editValues !== null) {
-      setExpenseData({
-        title: editValues.title,
-        price: editValues.price,
-        date: editValues.date,
-      });
-    }
-  }, [editValues]);
 
   const inputChangeHandler = (e) => {
     setExpenseData({ ...expenseData, [e.target.name]: e.target.value });
@@ -26,11 +16,10 @@ const ExpenseForm = ({ addExpense, editValues }) => {
     e.preventDefault();
     const data = {
       ...expenseData,
-      id:
-        editValues !== null ? editValues.id : Math.floor(Math.random() * 1000),
+      id: Math.floor(Math.random() * 1000),
       date: new Date(expenseData.date),
     };
-    addExpense(data, "add");
+    getData(data, "add");
   };
   return (
     <div className='expense-form'>

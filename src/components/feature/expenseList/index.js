@@ -1,11 +1,10 @@
 import React from "react";
-import ExpenseItem from "./expnsesItem";
-import "./style.css";
+import ExpenseItem from "./expenseItem";
 
 const ExpenseList = ({ list, getId }) => {
   const getIdHandler = (id, method) => getId(id, method);
   return (
-    <ul className='expense-list'>
+    <ul>
       {list.map((data) => (
         <ExpenseItem
           key={data.id}

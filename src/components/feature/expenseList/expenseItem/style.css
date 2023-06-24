@@ -7,7 +7,6 @@
   padding: 1rem;
   border-radius: 1rem;
   gap: 2rem;
-  color: #eee;
 }
 .expense-item .title {
   flex: 1;

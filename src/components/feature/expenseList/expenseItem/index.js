@@ -2,13 +2,13 @@ import React from "react";
 import "./style.css";
 
 const ExpenseItem = ({ id, title, price, date, getId }) => {
-  const editHandler = () => getId(id, "edit");
-
-  const deleteHandler = () => getId(id, "delete");
-
   const year = date.getFullYear();
   const month = date.toLocaleString("en-US", { month: "short" });
-  const day = date.toLocaleString("en-US", { day: "2-digit" });
+  const day = date.toLocaleString("en-Us", { day: "2-digit" });
+
+  const editHandler = () => getId(id, "edit");
+  const deleteHandler = () => getId(id, "delete");
+
   return (
     <li className='expense-item'>
       <div className='date'>

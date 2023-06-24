@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Container from "../components/ui/container";
 import ExpenseForm from "../components/feature/expenseForm";
 import ExpenseList from "../components/feature/expenseList";
+
 const expenseListArr = [
   {
     id: 1,
@@ -24,26 +25,24 @@ const expenseListArr = [
 ];
 const Home = () => {
   const [expenseList, setExpenseList] = useState(expenseListArr);
-  const [editValues, setEditValues] = useState(null);
 
-  const addExpenseHandler = (data, method) => {
-    if (method === "add") setExpenseList([data, ...expenseList]);
-    if (method === "edit") {
+  const getDataHandler = (data, method) => {
+    console.log(data, method);
+    if (method === "add") {
+      setExpenseList([data, ...expenseList]);
     }
   };
 
-  const getIdHandler = (id, method) => {
+  const getIdHandler = (data, method) => {
+    console.log(data, method, "getId");
     if (method === "delete") {
-      const deleteData = expenseList.filter((data) => +data.id !== +id);
-      setExpenseList(deleteData);
-    } else if (method === "edit") {
-      const editData = expenseList.filter((data) => data.id === id);
-      setEditValues(editData[0]);
+      const filterData = expenseList.filter((d) => +d.id !== +data);
+      setExpenseList(filterData);
     }
   };
   return (
     <Container>
-      <ExpenseForm addExpense={addExpenseHandler} editValues={editValues} />
+      <ExpenseForm getData={getDataHandler} />
       <ExpenseList list={expenseList} getId={getIdHandler} />
     </Container>
   );
