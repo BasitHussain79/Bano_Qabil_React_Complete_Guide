@@ -1,9 +1,4 @@
-.expense-list {
-  list-style: none;
-  margin: 2rem 0;
-}
-
-.expense-list li {
+.expense-item {
   margin: 2rem 0;
   display: flex;
   justify-content: space-between;
@@ -12,13 +7,13 @@
   padding: 1rem;
   border-radius: 1rem;
   gap: 2rem;
+  color: #eee;
 }
-
-.expense-list .title {
+.expense-item .title {
   flex: 1;
 }
 
-.date {
+.expense-item .date {
   background-color: rgba(239, 239, 239, 0.6);
   border-radius: 0.8rem;
   padding: 0.5rem 0.8rem;
@@ -26,26 +21,26 @@
   font-weight: 700;
 }
 
-.date .month {
+.expense-item .date .month {
   font-size: 1.2rem;
 }
 
-.date .year {
+.expense-item .date .year {
   font-size: 1.2rem;
 }
 
-.date .day {
+.expense-item .date .day {
   font-size: 1.6rem;
   margin-top: -0.3rem;
 }
 
-.actions {
+.expense-item .actions {
   display: flex;
   gap: 0.4rem;
   flex-flow: column;
 }
 
-.btn {
+.expense-item .actions .btn {
   padding: 0.5rem 0.8rem;
   border: none;
   background-color: rgba(239, 239, 239, 0.6);

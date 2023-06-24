@@ -8,17 +8,19 @@
 
 .expense-form h4 {
   margin-bottom: 2rem;
+  color: #eee;
 }
 
 .expense-form form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 1.5rem;
+  grid-gap: 3rem;
 }
 
 .expense-form form label {
   display: block;
   margin-bottom: 0.5rem;
+  color: #eee;
 }
 
 .expense-form form input {
@@ -34,6 +36,10 @@
   align-self: flex-end;
   cursor: pointer;
   transition: all 0.25s ease-in;
+  border: none;
+  background-color: #eee;
+  border-radius: 1.5rem;
+  padding: 0.7rem 1rem;
 }
 
 .expense-form form .btn:hover {

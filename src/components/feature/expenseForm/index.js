@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 
-const ExpenseForm = ({
-  expenseData: addExpenseData,
-  editValuesData,
-  editExpenseData,
-}) => {
-  // const [expenseTitle, setExpenseTitle] = useState("");
-  // const [expenseDate, setExpenseDate] = useState("");
-  // const [expensePrice, setExpensePrice] = useState("");
-
+const ExpenseForm = ({ addExpense, editValues }) => {
   const [expenseData, setExpenseData] = useState({
     title: "",
     price: "",
@@ -17,57 +9,29 @@ const ExpenseForm = ({
   });
 
   useEffect(() => {
-    if (editValuesData !== null) {
-      const dateString = editValuesData.date.toLocaleDateString().split("/");
-      const formatDate = `${dateString[2]}-${
-        dateString[0].length !== 2 ? "0" + dateString[0] : dateString[0]
-      }-${dateString[1].length !== 2 ? "0" + dateString[1] : dateString[1]}`;
-      console.log(formatDate, "formatDate");
+    if (editValues !== null) {
       setExpenseData({
-        title: editValuesData.title,
-        price: editValuesData.price,
-        date: formatDate,
+        title: editValues.title,
+        price: editValues.price,
+        date: editValues.date,
       });
     }
-  }, [editValuesData]);
+  }, [editValues]);
 
   const inputChangeHandler = (e) => {
     setExpenseData({ ...expenseData, [e.target.name]: e.target.value });
   };
 
-  // const titleChangeHandler = (e) => {
-  //   setExpenseData({ ...expenseData, title: e.target.value });
-  // };
-
-  // const dateChangeHandler = (e) => {
-  //   setExpenseData({ ...expenseData, date: e.target.value });
-  // };
-
-  // const priceChangeHandler = (e) => {
-  //   setExpenseData({ ...expenseData, price: e.target.value });
-  // };
-
   const submitHandler = (e) => {
     e.preventDefault();
     const data = {
+      ...expenseData,
       id:
-        editValuesData !== null
-          ? editValuesData.id
-          : Math.floor(Math.random() * 1000),
-      title: expenseData.title,
-      price: expenseData.price,
+        editValues !== null ? editValues.id : Math.floor(Math.random() * 1000),
       date: new Date(expenseData.date),
     };
-
-    editValuesData !== null ? editExpenseData(data) : addExpenseData(data);
-
-    setExpenseData({
-      title: "",
-      price: "",
-      date: "",
-    });
+    addExpense(data, "add");
   };
-
   return (
     <div className='expense-form'>
       <h4>Add Expense</h4>
@@ -112,7 +76,7 @@ const ExpenseForm = ({
         </div>
 
         <button className='btn' type='submit'>
-          {editValuesData !== null ? "Edit" : "Add"} Expense
+          Add Expense
         </button>
       </form>
     </div>
