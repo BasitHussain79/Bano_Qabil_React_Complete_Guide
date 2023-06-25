@@ -1,12 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 
-const ExpenseForm = ({ getData }) => {
+const ExpenseForm = ({ getData, editData }) => {
   const [expenseData, setExpenseData] = useState({
     title: "",
     price: "",
     date: "",
   });
+
+  useEffect(() => {
+    if (editData !== null) {
+      const year = editData.date.getFullYear();
+      const month = ("0" + (editData.date.getMonth() + 1)).slice(-2);
+      const day = editData.date.toLocaleString("en-US", { day: "2-digit" });
+      setExpenseData({
+        title: editData.title,
+        price: editData.price,
+        date: `${year}-${month}-${day}`,
+      });
+    }
+  }, [editData]);
 
   const inputChangeHandler = (e) => {
     setExpenseData({ ...expenseData, [e.target.name]: e.target.value });
@@ -16,10 +29,20 @@ const ExpenseForm = ({ getData }) => {
     e.preventDefault();
     const data = {
       ...expenseData,
-      id: Math.floor(Math.random() * 1000),
+      id: editData !== null ? editData.id : Math.floor(Math.random() * 1000),
       date: new Date(expenseData.date),
     };
-    getData(data, "add");
+    if (editData !== null) {
+      getData(data, "edit");
+    } else {
+      getData(data, "add");
+    }
+
+    setExpenseData({
+      title: "",
+      price: "",
+      date: "",
+    });
   };
   return (
     <div className='expense-form'>
@@ -65,7 +88,7 @@ const ExpenseForm = ({ getData }) => {
         </div>
 
         <button className='btn' type='submit'>
-          Add Expense
+          {editData !== null ? "Edit" : "Add"} Expense
         </button>
       </form>
     </div>
