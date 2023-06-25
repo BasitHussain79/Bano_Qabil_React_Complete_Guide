@@ -10,10 +10,14 @@ const ExpenseForm = ({ addExpense, editValues }) => {
 
   useEffect(() => {
     if (editValues !== null) {
+      const year = editValues.date.getFullYear();
+      const month = ("0" + editValues.date.getMonth() + 1).slice("-2");
+      const day = editValues.date.toLocaleString("en-US", { day: "2-digit" });
+      console.log(month);
       setExpenseData({
         title: editValues.title,
         price: editValues.price,
-        date: editValues.date,
+        date: `${year}-${month}-${day}`,
       });
     }
   }, [editValues]);
@@ -30,7 +34,17 @@ const ExpenseForm = ({ addExpense, editValues }) => {
         editValues !== null ? editValues.id : Math.floor(Math.random() * 1000),
       date: new Date(expenseData.date),
     };
-    addExpense(data, "add");
+    if (editValues !== null) {
+      addExpense(data, "edit");
+    } else {
+      addExpense(data, "add");
+    }
+
+    setExpenseData({
+      title: "",
+      price: "",
+      date: "",
+    });
   };
   return (
     <div className='expense-form'>
@@ -76,7 +90,7 @@ const ExpenseForm = ({ addExpense, editValues }) => {
         </div>
 
         <button className='btn' type='submit'>
-          Add Expense
+          {editValues !== null ? "Edit" : "Add"} Expense
         </button>
       </form>
     </div>

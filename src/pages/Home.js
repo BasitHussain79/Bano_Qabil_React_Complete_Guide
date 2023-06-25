@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Container from "../components/ui/container";
 import ExpenseForm from "../components/feature/expenseForm";
 import ExpenseList from "../components/feature/expenseList";
+import ExpenseFilter from "../components/feature/expenseFilter";
+import NoRecord from "../components/feature/noRecord";
 const expenseListArr = [
   {
     id: 1,
@@ -25,11 +27,29 @@ const expenseListArr = [
 const Home = () => {
   const [expenseList, setExpenseList] = useState(expenseListArr);
   const [editValues, setEditValues] = useState(null);
+  const [year, setYear] = useState("2023");
 
   const addExpenseHandler = (data, method) => {
     if (method === "add") setExpenseList([data, ...expenseList]);
     if (method === "edit") {
+      const editExpense = expenseList.map((d) => {
+        if (d.id === data.id) {
+          return {
+            id: data.id,
+            title: data.title,
+            price: data.price,
+            date: data.date,
+          };
+        }
+        return d;
+      });
+      setExpenseList(editExpense);
+      setEditValues(null);
     }
+  };
+
+  const yearChangeHandler = (data) => {
+    setYear(data);
   };
 
   const getIdHandler = (id, method) => {
@@ -41,10 +61,24 @@ const Home = () => {
       setEditValues(editData[0]);
     }
   };
+
+  const filterExpenses = expenseList.filter(
+    (data) => data.date.getFullYear() === +year
+  );
+
   return (
     <Container>
       <ExpenseForm addExpense={addExpenseHandler} editValues={editValues} />
-      <ExpenseList list={expenseList} getId={getIdHandler} />
+      <ExpenseFilter
+        year={year}
+        getYear={yearChangeHandler}
+        filterExpenses={filterExpenses}
+      />
+      {filterExpenses.length > 0 ? (
+        <ExpenseList list={filterExpenses} getId={getIdHandler} />
+      ) : (
+        <NoRecord />
+      )}
     </Container>
   );
 };

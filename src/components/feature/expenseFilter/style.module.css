@@ -1,0 +1,14 @@
+.filter-data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.filter-data .no-record {
+  background-color: rgb(223, 97, 97);
+  color: #eee;
+  padding: 0.5rem 1rem;
+  border-radius: 1.5rem;
+  outline: none;
+}
