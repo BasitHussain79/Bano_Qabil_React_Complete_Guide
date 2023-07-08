@@ -1,17 +1,19 @@
 {
   "name": "contactManagementApp",
   "version": "1.0.0",
-  "description": "Full Stack Contact Management App using MERN Stack",
+  "description": "Contact Management App using MERN Stack",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
   "keywords": [
+    "Contact Management App",
     "MERN",
     "Node",
     "Express",
-    "MongoDB"
+    "MongoDB",
+    "React"
   ],
   "author": {
     "name": "Basit Hussain",
