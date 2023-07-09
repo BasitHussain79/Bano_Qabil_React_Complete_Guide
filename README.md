@@ -1,4 +1,4 @@
-# Project 01
+# Project 01 Expense Tracker (React)
 
 # Batch 01 - [Expense Tracker](https://github.com/BasitHussain79/Bano_Qabil_React_Complete_Guide/tree/expense_tracker_batch01)
 
