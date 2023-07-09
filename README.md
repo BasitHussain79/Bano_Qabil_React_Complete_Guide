@@ -6,7 +6,7 @@
 
 # Project 02 - Contact Management App (MERN)
 
-# Batch 01 - [Contact Management App](https://github.com/BasitHussain79/Bano_Qabil_React_Complete_Guide/tree/contactManagmetApp-batch01)
+# Batch 01 - [Contact Management App](https://github.com/BasitHussain79/Bano_Qabil_React_Complete_Guide/tree/contactManagementApp-batch01)
 
 # Batch 02 - [Contact Management App](https://github.com/BasitHussain79/Bano_Qabil_React_Complete_Guide/tree/contactManagementApp-batch02)
 
