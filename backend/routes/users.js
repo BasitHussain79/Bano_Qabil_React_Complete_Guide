@@ -4,22 +4,24 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
-const Users = require("../model/Users");
+const Users = require("../model/User");
 const router = express.Router();
 
-// @route   POST /api/user/
-// desc     Register a new user
+// @route   POST /api/users
+// @desc    Register new user
 // @access  public
 router.post(
   "/",
   [
-    [check("name", "Please enter your full name.").notEmpty()],
-    [check("email", "Please enter your valid email.").isEmail()],
+    [check("name", "Please enter your name").notEmpty()],
+    [check("email", "Please enter your valid email address").isEmail()],
     [
       check(
         "password",
         "Please enter password with at least 6 characters."
-      ).isLength({ min: 6 }),
+      ).isLength({
+        min: 6,
+      }),
     ],
   ],
   async (req, res) => {
@@ -68,12 +70,15 @@ router.post(
         },
         (err, token) => {
           if (err) throw err;
-          return res.json({ token: token });
+          res.json({ token });
         }
       );
     } catch (err) {
-      console.error(err.message);
-      res.status(500).json({ status: 500, msg: "Server Error" });
+      console.log(err.message);
+      res.status(500).json({
+        status: 500,
+        msg: "Server Error",
+      });
     }
   }
 );

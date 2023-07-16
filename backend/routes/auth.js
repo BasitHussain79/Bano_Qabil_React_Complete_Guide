@@ -1,11 +1,11 @@
 const express = require("express");
-const { check, validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-const bcrypt = require("bcryptjs");
+const { check, validationResult } = require("express-validator");
 const auth = require("../middlewares/auth");
 
-const User = require("../model/Users");
+const User = require("../model/User");
 
 const router = express.Router();
 
@@ -15,16 +15,17 @@ const router = express.Router();
 router.get("/", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
-    res.json({
-      user,
-    });
+    res.json(user);
   } catch (err) {
-    console.error(error.message);
-    res.status(500).json({ status: 500, msg: "Server Error" });
+    console.error(err.message);
+    res.status(500).json({
+      status: 500,
+      msg: "Server error",
+    });
   }
 });
 
-// @route   POST /api/auth/
+// @routes  POST /api/auth
 // @desc    Login user
 // @access  public
 router.post(
@@ -84,7 +85,7 @@ router.post(
       console.error(err.message);
       res.status(500).json({
         status: 500,
-        msg: "Server Error",
+        msg: "Sever Error",
       });
     }
   }
