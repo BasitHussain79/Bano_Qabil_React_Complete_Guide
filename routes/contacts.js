@@ -2,7 +2,6 @@ const express = require("express");
 const auth = require("../middlewares/auth");
 const { check, validationResult } = require("express-validator");
 
-const User = require("../model/User");
 const Contact = require("../model/Contact");
 
 const router = express.Router();
@@ -75,48 +74,45 @@ router.post(
 router.put("/:id", auth, async (req, res) => {
   const { id } = req.params;
 
-  const errors = validationResult(req);
+  const { name, email, phone, relation } = req.body;
 
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      status: 400,
-      errors: errors.array(),
+  let contact = await Contact.findById(id);
+
+  if (!contact) {
+    return res.status(404).json({
+      status: 404,
+      msg: "Contact not found",
     });
   }
 
-  const { name, email, phone, relation } = req.body;
+  const contactFields = {};
+  if (name) contactFields.name = name;
+  if (email) contactFields.email = email;
+  if (phone) contactFields.phone = phone;
+  if (relation) contactFields.relation = relation;
+
+  if (req.user.id.toString() !== contact.user.toString()) {
+    return res.status(401).json({
+      status: 401,
+      msg: "Auhtorization denied",
+    });
+  }
 
   try {
-    if (!name || !email || !phone) {
-      return res.status(400).json({
-        status: 400,
-        msg: "Data is missing",
-      });
-    }
-    const contact = await Contact.findById(id);
-
-    if (!contact) {
-      return res.status(400).json({
-        status: 400,
-        msg: "Invalid Contact Id",
-      });
-    }
-
-    await Contact.findByIdAndUpdate(id, {
-      name,
-      email,
-      phone,
-      relation,
-    });
-
+    contact = await Contact.findByIdAndUpdate(
+      id,
+      { $set: contactFields },
+      { new: true }
+    );
     res.json({
       msg: "Contact update successfully",
+      data: contact,
     });
   } catch (err) {
-    console.error(err);
+    console.error(err.message);
     res.status(500).json({
       status: 500,
-      msg: "Server Error",
+      msg: "Server error",
     });
   }
 });
@@ -127,16 +123,23 @@ router.put("/:id", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   const { id } = req.params;
 
+  const contact = await Contact.findById(id);
+
+  if (!contact) {
+    return res.status(404).json({
+      status: 404,
+      msg: "Contact not found",
+    });
+  }
+
+  if (req.user.id.toString() !== contact.user.toString()) {
+    return res.status(401).json({
+      status: 401,
+      msg: "Auhtorization denied",
+    });
+  }
+
   try {
-    const contact = await Contact.findById(id);
-
-    if (!contact) {
-      return res.status(400).json({
-        status: 400,
-        msg: "Contact not found",
-      });
-    }
-
     await Contact.findByIdAndDelete(id);
 
     res.json({
