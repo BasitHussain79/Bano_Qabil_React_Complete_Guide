@@ -10,7 +10,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useId, useState } from "react";
+import ContactContext from "../../../context/contactContext/contactContext";
 
 const styles = {
   input: { mb: 2, fontSize: { sm: "14px", md: "18px" }, fontWeight: 500 },
@@ -27,13 +28,27 @@ const styles = {
   },
 };
 
-const ContactForm = () => {
+const ContactForm = ({ contactData }) => {
+  const contactContext = useContext(ContactContext);
+  const contactId = useId();
+
+  const { addContact, updateContact } = contactContext;
+
   const [contactForm, setContactForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    relationship: "personal",
+    name: contactData?.name ?? "",
+    phone: contactData?.phone ?? "",
+    email: contactData?.email ?? "",
+    relationship: contactData?.relationship ?? "personal",
   });
+
+  useEffect(() => {
+    setContactForm({
+      name: contactData?.name ?? "",
+      phone: contactData?.phone ?? "",
+      email: contactData?.email ?? "",
+      relationship: contactData?.relationship ?? "personal",
+    });
+  }, [contactData]);
 
   const onChangeHandler = (e) => {
     setContactForm((prevState) => ({
@@ -50,7 +65,22 @@ const ContactForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("final data", contactForm);
+    !contactData
+      ? addContact({
+          id: `${contactId}-${contactForm.name}`,
+          ...contactForm,
+        })
+      : updateContact({
+          id: contactData.id,
+          ...contactForm,
+        });
+
+    setContactForm({
+      name: "",
+      email: "",
+      phone: "",
+      relationship: "personal",
+    });
   };
   return (
     <Card sx={{ p: 4 }}>
@@ -122,7 +152,7 @@ const ContactForm = () => {
           color='primary'
           sx={styles.btn}
         >
-          Add Contact
+          {contactData ? "Update Contact" : "Add Contact"}
         </Button>
       </Box>
     </Card>

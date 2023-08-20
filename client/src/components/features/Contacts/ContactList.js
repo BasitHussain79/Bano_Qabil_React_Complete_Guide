@@ -21,12 +21,16 @@ const styles = {
   },
 };
 
-const ContactList = ({ data, length }) => {
+const ContactList = ({ data, getContact }) => {
   const { id, name, phone, email, relationship } = data;
   const typoProps = {
     variant: "body1",
     color: "darkblue",
     fontWeight: 500,
+  };
+
+  const editHandler = () => {
+    getContact(data);
   };
   return (
     <Box component='div' my={3}>
@@ -53,7 +57,13 @@ const ContactList = ({ data, length }) => {
       <Typography {...typoProps} mb={2}>
         {email}
       </Typography>
-      <Button type='button' variant='contained' color='primary' sx={{ mr: 2 }}>
+      <Button
+        type='button'
+        variant='contained'
+        color='primary'
+        sx={{ mr: 2 }}
+        onClick={editHandler}
+      >
         Edit
       </Button>
       <Button type='button' variant='contained' color='error'>

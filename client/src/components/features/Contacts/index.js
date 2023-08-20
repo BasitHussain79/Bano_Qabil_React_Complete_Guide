@@ -9,34 +9,20 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React, { Fragment } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import ContactList from "./ContactList";
 import ContactForm from "./ContactForm";
+import ContactContext from "../../../context/contactContext/contactContext";
 
 const Contact = () => {
-  const contacts = [
-    {
-      id: 1,
-      name: "Basit",
-      phone: "111-222-111",
-      email: "basit@gmail.com",
-      relationship: "professional",
-    },
-    {
-      id: 2,
-      name: "Kashan",
-      phone: "111-211-111",
-      email: "kashan@gmail.com",
-      relationship: "professional",
-    },
-    {
-      id: 3,
-      name: "Asil",
-      phone: "000-222-111",
-      email: "asil@gmail.com",
-      relationship: "personal",
-    },
-  ];
+  const contactContext = useContext(ContactContext);
+  const { contacts } = contactContext;
+  const [contactData, setContactData] = useState(null);
+
+  const getContact = (data) => {
+    console.log(data);
+    setContactData(data);
+  };
 
   return (
     <Container maxWidth='lg'>
@@ -44,7 +30,7 @@ const Contact = () => {
         <Toolbar />
         <Grid container spacing={{ md: 2, lg: 4 }}>
           <Grid item sm={12} md={6}>
-            <ContactForm />
+            <ContactForm contactData={contactData} />
           </Grid>
           <Grid item sm={12} md={6}>
             <Card sx={{ p: 4, borderRadius: 2 }}>
@@ -53,8 +39,8 @@ const Contact = () => {
               </Typography>
               <CardContent>
                 {contacts.map((data, idx) => (
-                  <Fragment key={data.id}>
-                    <ContactList data={data} />
+                  <Fragment key={idx}>
+                    <ContactList data={data} getContact={getContact} />
                     {idx === contacts.length - 1 ? "" : <Divider />}
                   </Fragment>
                 ))}
