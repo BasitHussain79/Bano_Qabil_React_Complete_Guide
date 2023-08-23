@@ -1,10 +1,16 @@
 import { useReducer } from "react";
-import reducer from "./contactReducer";
+import {
+  ADD_CONTACT,
+  CLEAR_FILTER,
+  DELETE_CONTACT,
+  FILTER_CONTACT,
+  UPDATE_CONTACT,
+} from "../types";
 import ContactContext from "./contactContext";
-import { ADD_CONTACT, UPDATE_CONTACT } from "../types";
+import reducer from "./contactReducer";
 
 const ContactState = (props) => {
-  const intialState = {
+  const initialState = {
     contacts: [
       {
         id: 1,
@@ -28,9 +34,10 @@ const ContactState = (props) => {
         relationship: "personal",
       },
     ],
+    filtered: null,
   };
 
-  const [state, dispatch] = useReducer(reducer, intialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   // Add Contact
   const addContact = (data) => {
@@ -47,11 +54,40 @@ const ContactState = (props) => {
       payload: data,
     });
   };
+
   // Delete Contact
+  const deleteContact = (id) => {
+    dispatch({
+      type: DELETE_CONTACT,
+      payload: id,
+    });
+  };
+
+  // Filter Contacts
+  const filterContacts = (text) => {
+    dispatch({
+      type: FILTER_CONTACT,
+      payload: text,
+    });
+  };
+
+  const clearFilter = () => {
+    dispatch({
+      type: CLEAR_FILTER,
+    });
+  };
 
   return (
     <ContactContext.Provider
-      value={{ contacts: state.contacts, addContact, updateContact }}
+      value={{
+        contacts: state.contacts,
+        addContact,
+        updateContact,
+        deleteContact,
+        filterContacts,
+        clearFilter,
+        filtered: state.filtered,
+      }}
     >
       {props.children}
     </ContactContext.Provider>

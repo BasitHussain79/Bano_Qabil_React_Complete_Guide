@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 
 const styles = {
@@ -21,8 +14,9 @@ const styles = {
   },
 };
 
-const ContactList = ({ data, getContact }) => {
+const ContactList = ({ data, getContact, deleteContact }) => {
   const { id, name, phone, email, relationship } = data;
+  
   const typoProps = {
     variant: "body1",
     color: "darkblue",
@@ -32,14 +26,19 @@ const ContactList = ({ data, getContact }) => {
   const editHandler = () => {
     getContact(data);
   };
+
+  const deleteHandler = () => {
+    deleteContact(id);
+  };
+
   return (
-    <Box component='div' my={3}>
-      <Box component='div' sx={styles.flex}>
-        <Typography variant='h5' fontWeight={600}>
+    <Box component="div" my={3}>
+      <Box component="div" sx={styles.flex}>
+        <Typography variant="h5" fontWeight={600}>
           {name}
         </Typography>
         <Typography
-          variant='body1'
+          variant="body1"
           sx={
             relationship === "professional"
               ? {
@@ -58,15 +57,20 @@ const ContactList = ({ data, getContact }) => {
         {email}
       </Typography>
       <Button
-        type='button'
-        variant='contained'
-        color='primary'
+        type="button"
+        variant="contained"
+        color="primary"
         sx={{ mr: 2 }}
         onClick={editHandler}
       >
         Edit
       </Button>
-      <Button type='button' variant='contained' color='error'>
+      <Button
+        type="button"
+        onClick={deleteHandler}
+        variant="contained"
+        color="error"
+      >
         Delete
       </Button>
     </Box>
