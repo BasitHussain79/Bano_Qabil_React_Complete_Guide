@@ -9,7 +9,7 @@ import Layout from "./layout";
 import RequireAuth from "./requireAuth";
 
 const AppRouter = () => {
-  const { isAuthenticated, isLoading, loadUser } = useContext(AuthContext);
+  const { isAuthenticated, loadUser } = useContext(AuthContext);
 
   useEffect(() => {
     loadUser();
@@ -36,7 +36,7 @@ const AppRouter = () => {
         <Route
           path="*"
           element={
-            <Navigate to={isAuthenticated && !isLoading ? "/" : "/login"} />
+            <Navigate to={isAuthenticated ? "/" : "/login"} />
           }
         />
       </Route>
