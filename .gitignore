@@ -1,7 +1,6 @@
-backend/node_modules
-backend/config/default.json
-backend/.env
+config/default.json
+.env
 
-backend/client/node_modules
-backend/client/.env
+client/node_modules
+client/.env
 node_modules

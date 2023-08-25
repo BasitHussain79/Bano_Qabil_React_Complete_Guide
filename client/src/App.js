@@ -1,28 +1,35 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages";
-import About from "./pages/about";
-import Navbar from "./components/common/Navbar";
-import PageNotFound from "./pages/page-not-found";
 import { Box, CssBaseline } from "@mui/material";
-import ContactState from "./context/contactContext/contactState";
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
+import Alerts from "./components/common/Alert";
+import Navbar from "./components/common/Navbar";
+import AlertState from "./context/alertContext/alertState";
+import AuthState from "./context/authContext/authState";
+import ContactState from "./context/contactContext/contactState";
+import AppRouter from "./routing/AppRouter";
+import setAuthToken from "./utils/setAuthToken";
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
   return (
-    <ContactState>
-      <Box component='div'>
-        <CssBaseline />
-        <Router>
-          <Navbar />
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/about' element={<About />} />
-            <Route path='*' element={<PageNotFound />} />
-          </Routes>
-        </Router>
-      </Box>
-    </ContactState>
+    <AuthState>
+      <ContactState>
+        <AlertState>
+          <Box component="div">
+            <CssBaseline />
+            <Router>
+              <Navbar />
+              <Alerts />
+              <AppRouter />
+            </Router>
+          </Box>
+        </AlertState>
+      </ContactState>
+    </AuthState>
   );
 };
 
